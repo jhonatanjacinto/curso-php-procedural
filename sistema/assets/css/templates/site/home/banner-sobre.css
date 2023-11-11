@@ -1,0 +1,32 @@
+.banner-sobre {
+    padding-block: 144px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 150px;
+    padding-left: 67px;
+
+    .img {
+        & img {
+            box-shadow: -100px -100px 1px #CCDDE4;
+        }
+    }
+
+    .text-block {
+        width: 640px;
+
+        & h2 {
+            font-size: 64px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.64px;
+            margin: 0;
+        }
+
+        & p {
+            font-size: 18px;
+            color: #A7ADAF;
+            margin-bottom: 60px;
+        }
+    }
+}
