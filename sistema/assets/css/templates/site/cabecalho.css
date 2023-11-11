@@ -1,0 +1,11 @@
+#site-top {
+    background-color: rgba(255, 255, 255, 0.8);
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    padding-inline: 64px;
+    padding-block: 27px;
+    align-items: center;
+}

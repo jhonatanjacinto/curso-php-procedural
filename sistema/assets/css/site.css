@@ -1,0 +1,7 @@
+@import url('_normalize.css');
+@import url('_base.css');
+@import url('templates/site/cabecalho.css');
+@import url('templates/site/menu.css'); 
+@import url('templates/site/rodape.css');
+@import url('templates/site/home/main-banner.css');
+@import url('templates/site/home/banner-sobre.css');

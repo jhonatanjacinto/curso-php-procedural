@@ -1,0 +1,47 @@
+.main-banner {
+    background-image: url('../../../../img/main-banner-bg.png');
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
+    height: 712px;
+
+    .block-container {
+        width: 850px;
+        padding-inline: 64px 16px;
+
+        & h2 {
+            font-size: 96px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.96px;
+            margin: 0 0 40px 0;
+
+            & span {
+                color: var(--tertiary-color);
+            }
+        }
+
+        .blocks {
+            background-color: #fff;
+
+            .block {
+                padding: 19px;
+                flex-grow: 1;
+
+                & span {
+                    display: block;
+                    color: var(--tertiary-color);
+                }
+
+                & strong {
+                    display: block;
+                }
+
+                & a {
+                    color: #A7ADAF;
+                }
+            }
+        }
+    }
+}

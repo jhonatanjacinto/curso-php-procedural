@@ -1,0 +1,18 @@
+#site-menu {
+    gap: 60px;
+    align-items: center;
+
+    .menu-item {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+
+        &.active,
+        &:hover {
+            color: var(--tertiary-color);
+        }
+    }
+}
