@@ -15,8 +15,8 @@ define('JS_URL', SITE_URL . '/assets/js');
 define('IMG_URL', SITE_URL . '/assets/img');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'odontovida');
+define('DB_PASSWORD', 'admin');
+define('DB_NAME', 'odontovida_db');
 
 // Importação automática dos arquivos de funções
 $functions_files = glob(FUNCTIONS_DIR . '/*.php') ?: [];

@@ -14,5 +14,10 @@
         &:hover {
             color: var(--tertiary-color);
         }
+
+        &.active.btn {
+            background-color: transparent;
+            border-color: var(--tertiary-color);
+        }
     }
 }

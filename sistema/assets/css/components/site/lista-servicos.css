@@ -1,0 +1,38 @@
+.lista-servicos {
+    background-color: #E1F1F8;
+    padding-block: 132px; /* top bottom*/
+    padding-inline: 62px; /* left right */
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 55px;
+
+    & h2 {
+        width: 516px;
+        font-size: 64px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: -0.64px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .icones {
+        flex-grow: 1;
+        width: calc(100% - 516px - 55px);
+        display: flex;
+        /* 
+            Faz com que todos os elementos que ficarem na mesma linha do flex container 
+            tenham o mesmo tamanho (altura)
+        */
+        align-items: stretch; 
+        justify-content: flex-start;
+        gap: 100px;
+        flex-wrap: wrap;
+
+        .bloco-icone {
+            width: calc(33.333% - 100px);
+        }
+    }
+}

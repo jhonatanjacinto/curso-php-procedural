@@ -64,3 +64,23 @@ function get_page_url(string $page_name, bool $is_restricted_area = false): stri
 function get_image_url(string $image_name): string {
     return IMG_URL . '/' . $image_name;
 }
+
+/**
+ * Recebe um texto e o diminui levando em consideração a quantidade de palavras informada
+ * @param string $str               Texto original a ser "truncado"
+ * @param int $words_qty            Quantidade de palavras a ser considerada
+ * @return string 
+ */
+function shorten_string(string $str, int $words_qty = 1): string {
+    if (empty($str)) {
+        return $str;
+    }
+
+    $words = explode(" ", $str);
+    if (count($words) <= $words_qty) {
+        return $str;
+    }
+
+    $truncated_str = join(" ", array_slice($words, 0, $words_qty)) . "...";
+    return $truncated_str;
+}
