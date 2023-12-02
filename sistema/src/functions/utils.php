@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+use Random\RandomException;
 
 /**
  * Exibe a estrutura de uma variável de forma legível para debug.
@@ -85,7 +87,18 @@ function shorten_string(string $str, int $words_qty = 1): string {
     return $truncated_str;
 }
 
-function validate_update(
+/**
+ * Valida os arquivos enviados para upload antes de realizar o upload de fato
+ * @param array $file_info 
+ * @param int $max_weight 
+ * @param int $image_min_width 
+ * @param int $image_min_height 
+ * @param array $mime_types 
+ * @param array $extensions 
+ * @return bool 
+ * @throws Exception 
+ */
+function validate_upload(
     array $file_info, 
     int $max_weight = 5, // MB
     int $image_min_width = 100, 
@@ -93,7 +106,6 @@ function validate_update(
     array $mime_types = [], 
     array $extensions = []
 ): bool {
-    
     $check_uploaded_file = function($file_name, $file_tmp_name, $file_type) use ($max_weight, $image_min_height, $image_min_width, $mime_types, $extensions)
     {
         $image_extensions = array("jpg", "jpeg", "png", "gif", "webp", "svg");
@@ -140,7 +152,7 @@ function validate_update(
 
     // se "type" é uma string, então está sendo feito o upload de apenas um arquivo
     if (is_string($file_info["type"]) && trim($file_info["type"]) != "") {
-        $check_uploaded_file();
+        $check_uploaded_file($file_info["name"], $file_info["tmp_name"], $file_info["type"]);
     } 
     // se "type" é array, então o usuário está realizando o envio de múltiplos arquivos
     else if (is_array($file_info["type"])) {
@@ -159,3 +171,26 @@ function validate_update(
     return true;
 }
 
+/**
+ * Realiza o upload do arquivo de fato
+ * @param array $file_info 
+ * @param string $novo_nome 
+ * @param string $folder 
+ * @return bool 
+ * @throws RandomException 
+ * @throws Exception 
+ */
+function upload_file(array $file_info, string $novo_nome = "", string $folder = ROOT_DIR . "/assets/img"): bool 
+{
+    $file_name = $file_info["name"];
+    $extensao = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+    $random_name = md5(microtime() . random_int(10000, 1000000)) . "." . $extensao;
+    $novo_nome = $novo_nome ? $novo_nome . "." . $extensao : $random_name;
+    $folder_save_path = $folder . "/" . $novo_nome;
+
+    if (!move_uploaded_file($file_info["tmp_name"], $folder_save_path)) {
+        throw new Exception("Não foi possível realizar o upload do arquivo!");
+    }
+
+    return true;
+}
