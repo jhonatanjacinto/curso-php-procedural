@@ -8,9 +8,11 @@
  * Retorna a lista completa de serviços cadastrados na aplicação.
  * @return array 
  */
-function get_servicos(): array 
+function get_servicos(int $pagina = 1, int $qtd_por_pagina = 10): array 
 {
-    $sql = "SELECT * FROM odvx_servicos";
+    $pagina = $pagina <= 1 ? 1 : $pagina;
+    $offset = ($pagina - 1) * $qtd_por_pagina;
+    $sql = "SELECT * FROM odvx_servicos LIMIT $offset, $qtd_por_pagina";
     $servicos = db_query_many($sql);
 
     return $servicos;
@@ -41,17 +43,18 @@ function get_servico_por_id(int $id): ?array
  * @return bool 
  * @throws Exception 
  */
-function cadastrar_servico(string $titulo, string $descricao, string $icone, bool $ativo = true): bool
+function cadastrar_servico(string $titulo, string $descricao, string $icone, string $pdf, bool $ativo = true): bool
 {
     // Validamos os dados enviados
     $titulo = filter_var($titulo, FILTER_DEFAULT) ?: throw new Exception("Título é obrigatório!");
     $descricao = filter_var($descricao, FILTER_DEFAULT) ?: throw new Exception("Descrição é obrigatório!");
     $icone = filter_var($icone, FILTER_DEFAULT) ?: throw new Exception("Ícone do serviço é obrigatório!");
+    $pdf = filter_var($pdf, FILTER_DEFAULT) ?: throw new Exception("PDF do serviço é obrigatório!");
 
     // Cadastramos as informações no banco
-    $sql = "INSERT INTO odvx_servicos (titulo, descricao, icone, ativo) VALUES (?, ?, ?, ?)";
-    $param_types = "sssi";
-    $param_values = [$titulo, $descricao, $icone, $ativo];
+    $sql = "INSERT INTO odvx_servicos (titulo, descricao, icone, pdf, ativo) VALUES (?, ?, ?, ?, ?)";
+    $param_types = "ssssi";
+    $param_values = [$titulo, $descricao, $icone, $pdf, $ativo];
     $is_cadastrado = db_execute_sql($sql, $param_types, $param_values);
 
     return $is_cadastrado;
@@ -102,4 +105,24 @@ function excluir_servico(int $id): bool
     $is_excluido = db_execute_sql($sql, $param_types, $param_values);
 
     return $is_excluido;
+}
+
+function visualizar_servico_pdf(int $id): never
+{
+    $servico = get_servico_por_id($id);
+    if (!$servico || !$servico["pdf"]) {
+        throw new Exception("Não há PDF para ser visualizado!");
+    }
+
+    $file_pdf_path = $_SERVER["DOCUMENT_ROOT"] . "/../_pdfs/" . $servico["pdf"];
+    if (!file_exists($file_pdf_path)) {
+        throw new Exception("Arquivo PDF procurado não existe no servidor!");
+    }
+
+    $mime_type = mime_content_type($file_pdf_path);
+    $file_name = $servico["pdf"];
+    header("Content-Type: $mime_type");
+    header("Content-Disposition: inline; filename=$file_name");
+    readfile($file_pdf_path);
+    exit();
 }

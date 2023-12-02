@@ -6,13 +6,20 @@ $msg = [];
 
 try {
     if ($_POST) {
-        debug_print($_FILES, true);
         $titulo = $_POST["titulo"] ?? "";
         $descricao = $_POST["descricao"] ?? "";
-        $icone = $_POST["icone"] ?? "";
         $ativo = isset($_POST["ativo"]);
-        
-        cadastrar_servico($titulo, $descricao, $icone, $ativo);
+
+        validate_upload($_FILES["icone"], max_weight: 3);
+        validate_upload($_FILES["pdf"], max_weight: 2, mime_types: ["application/pdf"], extensions: ["pdf"]);
+
+        $dir_icones = ROOT_DIR . "/assets/img/icones";
+        $icone = upload_file($_FILES["icone"], "icone-servico", $dir_icones);
+
+        $dir_pdf = $_SERVER["DOCUMENT_ROOT"] . "/../_pdfs";
+        $pdf = upload_file($_FILES["pdf"], "DOC-SERVICO-DESCRICAO", $dir_pdf);
+
+        cadastrar_servico($titulo, $descricao, $icone, $pdf, $ativo);
         unset($titulo, $descricao, $icone, $ativo);
         
         $msg = [
@@ -21,6 +28,7 @@ try {
         ];
     }
 } catch (Exception $exc) {
+    // excluir arquivos
     $msg = [
         "message" => $exc->getMessage(),
         "css_class" => "alert-danger"
@@ -60,6 +68,10 @@ render_component("area-restrita/commons/cabecalho", [
             <div class="mb-3">
                 <label for="icone" class="form-label">Ícone:</label>
                 <input type="file" class="form-control" name="icone" id="icone" />
+            </div>
+            <div class="mb-3">
+                <label for="pdf" class="form-label">PDF:</label>
+                <input type="file" class="form-control" name="pdf" id="pdf" />
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" name="ativo" id="ativo" value="1" class="form-check-input" <?= (isset($ativo) && $ativo) ? "checked" : null ?> />

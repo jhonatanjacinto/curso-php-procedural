@@ -5,15 +5,21 @@ require "src/app-config.php";
 $msg = [];
 
 try {
-    if ($_GET) {
+    if (isset($_GET["excluir"])) {
         $id = (int) ($_GET["excluir"] ?? 0);
         excluir_servico($id);
+    }
+
+    if (isset($_GET["visualizar"])) {
+        $id = (int) ($_GET["visualizar"] ?? 0);
+        visualizar_servico_pdf($id);
     }
 } catch (Exception $exc) {
     $msg = ["message" => $exc->getMessage(), "css_class" => "alert-danger"];
 }
 
-$servicos = get_servicos();
+$pagina = (int) ($_GET["pagina"] ?? 1);
+$servicos = get_servicos($pagina, 2);
 render_component("area-restrita/commons/cabecalho", [
     "page_title" => get_page_title("Serviços - Área Restrita"),
     "active_item" => "servicos"
@@ -43,7 +49,7 @@ render_component("area-restrita/commons/cabecalho", [
                     <th>Título</th>
                     <th>Descrição</th>
                     <th>Status</th>
-                    <th colspan="2" width="5%"></th>
+                    <th colspan="3" width="5%"></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +59,7 @@ render_component("area-restrita/commons/cabecalho", [
                         $icone = "icones/" . $servico["icone"];
                         $editar_url = get_page_url("/servicos/editar.php?id=$id", true);
                         $delete_url = get_page_url("/servicos/index.php?excluir=$id", true);
+                        $visualizar_url = get_page_url("/servicos/index.php?visualizar=$id", true);
                 ?>
                     <tr>
                         <td><img src="<?= get_image_url($icone) ?>" width="50" height="50" /></td>
@@ -69,6 +76,11 @@ render_component("area-restrita/commons/cabecalho", [
                         <td>
                             <a href="<?= $delete_url ?>" class="btn btn-danger btn-sm">
                                 Excluir
+                            </a>
+                        </td>
+                        <td>
+                            <a href="<?= $visualizar_url ?>" class="btn btn-info btn-sm">
+                                Visualizar PDF
                             </a>
                         </td>
                     </tr>

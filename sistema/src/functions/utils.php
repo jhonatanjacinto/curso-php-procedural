@@ -140,11 +140,11 @@ function validate_upload(
         if ($is_image) {
             // [0] = largura da imagem / [1] = altura da imagem
             $image_size = getimagesize($file_tmp_name);
-            if ($image_min_width and $image_size[0] < $image_min_width) {
+            if ($image_min_width and $image_size and $image_size[0] < $image_min_width) {
                 throw new Exception("A imagem deve ter no mínimo {$image_min_width}px de largura!");
             }
 
-            if ($image_min_height and $image_size[1] < $image_min_height) {
+            if ($image_min_height and $image_size and $image_size[1] < $image_min_height) {
                 throw new Exception("A imagem deve ter no mínimo {$image_min_height}px de altura!");
             }
         }
@@ -176,21 +176,21 @@ function validate_upload(
  * @param array $file_info 
  * @param string $novo_nome 
  * @param string $folder 
- * @return bool 
+ * @return string 
  * @throws RandomException 
  * @throws Exception 
  */
-function upload_file(array $file_info, string $novo_nome = "", string $folder = ROOT_DIR . "/assets/img"): bool 
+function upload_file(array $file_info, string $novo_nome = "", string $folder = ROOT_DIR . "/assets/img"): string 
 {
     $file_name = $file_info["name"];
     $extensao = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-    $random_name = md5(microtime() . random_int(10000, 1000000)) . "." . $extensao;
-    $novo_nome = $novo_nome ? $novo_nome . "." . $extensao : $random_name;
+    $random_id = md5(microtime() . random_int(10000, 1000000));
+    $novo_nome = $novo_nome ? "$novo_nome-$random_id.$extensao" : "$random_id.$extensao";
     $folder_save_path = $folder . "/" . $novo_nome;
 
     if (!move_uploaded_file($file_info["tmp_name"], $folder_save_path)) {
         throw new Exception("Não foi possível realizar o upload do arquivo!");
     }
 
-    return true;
+    return $novo_nome;
 }
