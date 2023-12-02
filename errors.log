@@ -30,3 +30,4 @@ Stack trace:
   thrown in D:\Sites\curso-php\sistema\src\functions\servicos.php on line 31
 [25-Nov-2023 16:40:29 America/Sao_Paulo] PHP Warning:  Undefined variable $titulo in D:\Sites\curso-php\sistema\area-restrita\servicos\cadastro.php on line 51
 [25-Nov-2023 16:44:12 America/Sao_Paulo] PHP Warning:  Undefined variable $ativo in D:\Sites\curso-php\sistema\area-restrita\servicos\cadastro.php on line 62
+[02-Dec-2023 14:01:45 America/Sao_Paulo] PHP Parse error:  syntax error, unexpected token ")" in D:\Sites\curso-php\sistema\src\functions\utils.php on line 88

@@ -6,6 +6,7 @@ $msg = [];
 
 try {
     if ($_POST) {
+        debug_print($_FILES, true);
         $titulo = $_POST["titulo"] ?? "";
         $descricao = $_POST["descricao"] ?? "";
         $icone = $_POST["icone"] ?? "";
@@ -40,7 +41,7 @@ render_component("area-restrita/commons/cabecalho", [
         <a href="<?= get_page_url("/servicos/", true) ?>" class="btn btn-primary btn-sm">
             Voltar para Listagem
         </a>
-        <form method="POST" class="mt-3">
+        <form method="POST" class="mt-3" enctype="multipart/form-data">
             
             <?php if ($msg) : ?>
                 <div class="alert <?= $msg["css_class"] ?>">
@@ -58,7 +59,7 @@ render_component("area-restrita/commons/cabecalho", [
             </div>
             <div class="mb-3">
                 <label for="icone" class="form-label">Ícone:</label>
-                <input type="text" class="form-control" name="icone" id="icone" value="<?= $icone ?? "" ?>" placeholder="Ex: icone-1.svg" />
+                <input type="file" class="form-control" name="icone" id="icone" />
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" name="ativo" id="ativo" value="1" class="form-check-input" <?= (isset($ativo) && $ativo) ? "checked" : null ?> />
